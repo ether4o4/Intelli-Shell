@@ -75,13 +75,21 @@ jobs:
           ASSET_NAME: ${{ github.event.inputs.asset_name || 'intellishell.apk' }}
         run: |
           mkdir -p dist
-          # Prefer a universal APK; otherwise take the largest debug APK built.
-          APK=$(ls android/app/build/outputs/apk/debug/*universal*.apk 2>/dev/null | head -1)
+          # The stable link serves the arm64 APK (~1/3 the size of universal —
+          # a 300 MB mobile download kept failing). armv7 and universal ship as
+          # extra assets for older phones.
+          OUT=android/app/build/outputs/apk/debug
+          APK=$(ls $OUT/*arm64-v8a*.apk 2>/dev/null | head -1)
           if [ -z "$APK" ]; then
-            APK=$(ls -S android/app/build/outputs/apk/debug/*.apk | head -1)
+            APK=$(ls -S $OUT/*.apk | head -1)
           fi
           echo "Staging $APK -> dist/${ASSET_NAME}"
           cp "$APK" "dist/${ASSET_NAME}"
+          V7=$(ls $OUT/*armeabi-v7a*.apk 2>/dev/null | head -1)
+          [ -n "$V7" ] && cp "$V7" dist/intellishell-armv7.apk
+          UNI=$(ls $OUT/*universal*.apk 2>/dev/null | head -1)
+          [ -n "$UNI" ] && cp "$UNI" dist/intellishell-universal.apk
+          ls -la dist/
 
       - name: Publish rolling release
         env:
@@ -90,7 +98,7 @@ jobs:
         run: |
           # Refresh the rolling release so the asset (and its stable URL) updates.
           gh release delete android-preview --yes --cleanup-tag 2>/dev/null || true
-          gh release create android-preview "dist/${ASSET_NAME}" \
+          gh release create android-preview dist/* \
             --title "IntelliShell — Android Preview" \
             --notes "Rolling debug-signed APK: split-screen AI chat + live terminal, on-device or cloud models. Enable 'Install unknown apps' to sideload." \
             --latest
