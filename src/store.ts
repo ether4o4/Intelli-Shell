@@ -5,6 +5,7 @@
  */
 import {useSyncExternalStore} from 'react';
 import {ChatMessage} from './llm/types';
+import {LocalModel} from './models';
 import {Bridge} from './native/bridge';
 
 export interface DownloadState {
@@ -40,6 +41,7 @@ export interface Settings {
   cloudModel: string;
   cloudKey: string;
   localModelId: string;
+  customModels: LocalModel[];
 }
 
 export type Status = 'idle' | 'thinking' | 'working';
@@ -71,6 +73,7 @@ let state: State = {
     cloudModel: 'gpt-4o-mini',
     cloudKey: '',
     localModelId: 'qwen2.5-3b-instruct-q4',
+    customModels: [],
   },
   settingsOpen: false,
   history: [],
@@ -161,17 +164,19 @@ async function persist(s: Settings) {
     await Bridge.setPref('cloud.model', s.cloudModel);
     await Bridge.setPref('cloud.key', s.cloudKey);
     await Bridge.setPref('local.modelId', s.localModelId);
+    await Bridge.setPref('local.customModels', JSON.stringify(s.customModels));
   } catch (_e) {}
 }
 
 export async function loadSettings(): Promise<void> {
   try {
-    const [provider, baseUrl, model, key, localId] = await Promise.all([
+    const [provider, baseUrl, model, key, localId, customJson] = await Promise.all([
       Bridge.getPref('provider'),
       Bridge.getPref('cloud.baseUrl'),
       Bridge.getPref('cloud.model'),
       Bridge.getPref('cloud.key'),
       Bridge.getPref('local.modelId'),
+      Bridge.getPref('local.customModels'),
     ]);
     const s = {...state.settings};
     if (provider === 'cloud' || provider === 'local') {
@@ -188,6 +193,16 @@ export async function loadSettings(): Promise<void> {
     }
     if (localId) {
       s.localModelId = localId;
+    }
+    if (customJson) {
+      try {
+        const list = JSON.parse(customJson);
+        if (Array.isArray(list)) {
+          s.customModels = list.filter(
+            (m: any) => m && typeof m.id === 'string' && typeof m.url === 'string',
+          );
+        }
+      } catch (_e) {}
     }
     set({settings: s});
   } catch (_e) {}

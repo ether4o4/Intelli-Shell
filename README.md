@@ -35,7 +35,8 @@ result back to the model, and continues — until the task is done.
 
 - **On-device** — pick a small GGUF model (Qwen2.5 3B, Llama 3.2 3B, Gemma 2 2B,
   Phi-3.5), download it from Hugging Face right in the app, and run it locally via
-  **llama.rn** (llama.cpp). Private, offline, no key.
+  **llama.rn** (llama.cpp). Private, offline, no key. Or paste **any GGUF link
+  from Hugging Face** in Settings to add your own model to the list.
 - **Cloud** — point it at any OpenAI-compatible endpoint (OpenAI, OpenRouter,
   DeepSeek, Groq, or your own gateway) with your own key. Streams live. Your key
   stays on the device.

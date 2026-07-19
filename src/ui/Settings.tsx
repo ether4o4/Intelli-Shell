@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {theme} from '../theme';
 import {useStore, actions} from '../store';
-import {CLOUD_PRESETS, LOCAL_MODELS, LocalModel} from '../models';
+import {CLOUD_PRESETS, LOCAL_MODELS, LocalModel, customModelFromUrl} from '../models';
 import {localAvailable} from '../llm/localLlama';
 import {Bridge} from '../native/bridge';
 
@@ -139,7 +139,18 @@ function LocalSettings() {
       </View>
 
       <Text style={styles.section}>Local model</Text>
-      {LOCAL_MODELS.map(m => {
+      {[...LOCAL_MODELS, ...settings.customModels].map(m => {
+        const isCustom = settings.customModels.some(c => c.id === m.id);
+        const removeCustom = () => {
+          if (downloaded.includes(m.id)) {
+            del(m.id);
+          }
+          const patch: any = {customModels: settings.customModels.filter(c => c.id !== m.id)};
+          if (settings.localModelId === m.id) {
+            patch.localModelId = LOCAL_MODELS[0].id;
+          }
+          actions.updateSettings(patch);
+        };
         const on = settings.localModelId === m.id;
         const isDown = downloaded.includes(m.id);
         const dl = downloads[m.id];
@@ -165,22 +176,86 @@ function LocalSettings() {
               {dl && dl.error ? <Text style={styles.dlError}>download failed — tap to retry</Text> : null}
             </View>
 
-            {isDown ? (
-              <Pressable style={styles.delBtn} onPress={() => del(m.id)} hitSlop={6}>
-                <Text style={styles.delText}>Delete</Text>
-              </Pressable>
-            ) : downloading ? (
-              <Text style={styles.installedMark}>…</Text>
-            ) : (
-              <Pressable style={styles.dlBtn} onPress={() => startDownload(m)} hitSlop={6}>
-                <Text style={styles.dlText}>Download</Text>
-              </Pressable>
-            )}
+            <View style={styles.actionCol}>
+              {isDown ? (
+                <Pressable style={styles.delBtn} onPress={() => del(m.id)} hitSlop={6}>
+                  <Text style={styles.delText}>Delete</Text>
+                </Pressable>
+              ) : downloading ? (
+                <Text style={styles.installedMark}>…</Text>
+              ) : (
+                <Pressable style={styles.dlBtn} onPress={() => startDownload(m)} hitSlop={6}>
+                  <Text style={styles.dlText}>Download</Text>
+                </Pressable>
+              )}
+              {isCustom && (
+                <Pressable onPress={removeCustom} hitSlop={6}>
+                  <Text style={styles.removeText}>Remove</Text>
+                </Pressable>
+              )}
+            </View>
           </Pressable>
         );
       })}
+
+      <AddCustomModel onAdd={startDownload} />
       <Text style={styles.hint}>Models are GGUF files pulled from Hugging Face and run fully on-device.</Text>
     </>
+  );
+}
+
+/** Paste any direct GGUF link (Hugging Face or elsewhere) to add it to the list. */
+function AddCustomModel({onAdd}: {onAdd: (m: LocalModel) => void}) {
+  const settings = useStore(s => s.settings);
+  const [url, setUrl] = React.useState('');
+  const [error, setError] = React.useState('');
+
+  const add = () => {
+    const m = customModelFromUrl(url);
+    if (!m) {
+      setError('Paste a direct https link to a .gguf file (a Hugging Face "resolve" or "blob" URL works).');
+      return;
+    }
+    setError('');
+    setUrl('');
+    const exists =
+      LOCAL_MODELS.some(x => x.id === m.id) || settings.customModels.some(x => x.id === m.id);
+    if (exists) {
+      actions.updateSettings({localModelId: m.id});
+      return;
+    }
+    actions.updateSettings({customModels: [...settings.customModels, m], localModelId: m.id});
+    onAdd(m);
+  };
+
+  return (
+    <View style={styles.addBox}>
+      <Text style={styles.addTitle}>Add any GGUF from Hugging Face</Text>
+      <View style={styles.addRow}>
+        <TextInput
+          style={[styles.fieldInput, styles.addInput]}
+          value={url}
+          onChangeText={t => {
+            setUrl(t);
+            if (error) {
+              setError('');
+            }
+          }}
+          placeholder="https://huggingface.co/…/resolve/main/model.Q4_K_M.gguf"
+          placeholderTextColor={theme.textFaint}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+        <Pressable style={styles.dlBtn} onPress={add} hitSlop={6}>
+          <Text style={styles.dlText}>Add</Text>
+        </Pressable>
+      </View>
+      {error ? <Text style={styles.dlError}>{error}</Text> : null}
+      <Text style={styles.hint}>
+        On a model page, open "Files", find the .gguf you want, and copy its download link. Q4
+        quants of 2–4B models run best on phones.
+      </Text>
+    </View>
   );
 }
 
@@ -337,4 +412,10 @@ const styles = StyleSheet.create({
   delBtn: {borderWidth: 1, borderColor: theme.border, borderRadius: 4, paddingHorizontal: 11, paddingVertical: 6},
   delText: {color: theme.textDim, fontSize: 12},
   installedMark: {color: theme.textFaint, fontSize: 16, width: 24, textAlign: 'center'},
+  actionCol: {alignItems: 'center', gap: 6},
+  removeText: {color: theme.red, fontSize: 11},
+  addBox: {marginTop: 12},
+  addTitle: {color: theme.text, fontSize: 13, fontWeight: '600', marginBottom: 8},
+  addRow: {flexDirection: 'row', alignItems: 'center', gap: 8},
+  addInput: {flex: 1},
 });
