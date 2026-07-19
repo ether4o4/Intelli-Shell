@@ -1,6 +1,5 @@
 import React, {useEffect, useRef} from 'react';
 import {
-  SafeAreaView,
   View,
   StatusBar,
   StyleSheet,
@@ -8,6 +7,9 @@ import {
   Platform,
 } from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+// RN core's SafeAreaView is a no-op on Android; with Android 15's forced
+// edge-to-edge the app drew under the status bar and gesture bar without this.
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
 import {theme} from './src/theme';
 import {useStore, actions, bootstrap} from './src/store';
@@ -33,8 +35,9 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={styles.root}>
-      <SafeAreaView style={styles.root}>
-        <StatusBar barStyle="light-content" backgroundColor={theme.bg} />
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.root} edges={['top', 'bottom', 'left', 'right']}>
+          <StatusBar barStyle="light-content" backgroundColor={theme.bg} />
 
         <AppBar onOpenSettings={() => actions.openSettings(true)} />
 
@@ -52,8 +55,9 @@ export default function App() {
           <Composer onSend={send} />
         </KeyboardAvoidingView>
 
-        <Settings />
-      </SafeAreaView>
+          <Settings />
+        </SafeAreaView>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }
