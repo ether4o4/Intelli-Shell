@@ -4,6 +4,10 @@ apply plugin: "com.facebook.react"
 
 react {
     autolinkLibrariesWithApp()
+    // Bundle the JS into every variant, including debug. Without this a
+    // sideloaded debug APK looks for a Metro dev server, falls back to
+    // assets://index.android.bundle, finds nothing, and crashes on launch.
+    debuggableVariants = []
 }
 
 // Disabled for the preview build so ProGuard/R8 can't strip anything the app
