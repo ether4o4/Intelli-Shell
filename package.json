@@ -16,7 +16,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@shopify/react-native-skia": "^1.11.18",
     "llama.rn": "0.12.6",
     "react": "19.1.4",
     "react-native": "0.81.6",
