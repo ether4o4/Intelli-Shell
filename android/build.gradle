@@ -3,7 +3,11 @@ buildscript {
         buildToolsVersion = "36.0.0"
         minSdkVersion = 24
         compileSdkVersion = 36
-        targetSdkVersion = 36
+        // Target API 28 on purpose: from API 29 the OS mounts the app's data
+        // dir no-exec, so proot's guest binaries (busybox, apk, /usr/bin/env)
+        // can't be executed even with +x. API 28 keeps the exec-from-data-dir
+        // rule — the same reason Termux/proot-distro apps pin this.
+        targetSdkVersion = 28
         ndkVersion = "27.1.12297006"
         kotlinVersion = "2.1.20"
     }

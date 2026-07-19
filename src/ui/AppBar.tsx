@@ -14,8 +14,7 @@ export default function AppBar({onOpenSettings}: {onOpenSettings: () => void}) {
 
   return (
     <View style={styles.bar}>
-      <GoldText text="IntelliShell" size={17} />
-      <Text style={styles.sub}>agent</Text>
+      <GoldText text="IntelliShell" size={15} />
       <View style={styles.spacer} />
 
       {/* Emergency stop — always tappable; goes bright when the agent is active. */}
@@ -82,7 +81,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingHorizontal: 9,
     paddingVertical: 5,
-    maxWidth: 130,
+    maxWidth: 108,
+    flexShrink: 1,
   },
   dot: {width: 6, height: 6, borderRadius: 3, marginRight: 7},
   chipText: {fontFamily: theme.mono, fontSize: 11, color: theme.text, flexShrink: 1},

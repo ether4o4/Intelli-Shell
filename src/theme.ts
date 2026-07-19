@@ -1,58 +1,53 @@
 /**
- * IntelliShell palette — red · black · white · gold.
+ * IntelliShell palette — calm slate with a soft blue accent.
  *
- * Black grounds, white text, red for the wordmark's sibling actions (STOP, live
- * pulse), and metallic gold as the accent. Gold is never a flat fill in the UI —
- * see `ui/Gold.tsx` for the real metallic gradients (Skia text + LinearGradient
- * surfaces). The color tokens below hold the mid-gold used for hairlines, dots,
- * and text tints; anything prominent uses the gradient.
- *
- * The `gold*` keys are the accent. The legacy `purple*` keys are kept as aliases
- * that now resolve to gold, so components already themed on the accent stay gold
- * without churn.
+ * Neutral dark-slate grounds and off-white text (GitHub/VS Code dark family),
+ * a muted blue as the single accent, and a restrained red kept only for the
+ * STOP control. The `gold*`/`purple*` keys are legacy accent aliases that now
+ * resolve to the blue accent, so existing components restyle without churn.
  */
-const GOLD = '#d9b45a';
-const GOLD_DEEP = '#b98428';
-const GOLD_SOFT = 'rgba(217,180,90,0.14)';
+const ACCENT = '#6aa9ff';
+const ACCENT_DEEP = '#3d7de0';
+const ACCENT_SOFT = 'rgba(106,169,255,0.14)';
 
 export const theme = {
-  bg: '#0a0808',
-  surface: '#100d0c',
-  surface2: '#181413',
-  border: '#2a2320',
+  bg: '#0d1117',
+  surface: '#161b22',
+  surface2: '#1c2129',
+  border: '#2b323c',
 
-  text: '#f3efe9', // white body text
-  textDim: '#a89f97',
-  textFaint: '#6d645d',
+  text: '#e6edf3',
+  textDim: '#9aa4b0',
+  textFaint: '#6a7480',
 
-  red: '#e2313c', // wordmark siblings: STOP, live pulse
-  redSoft: 'rgba(226,49,60,0.16)',
+  red: '#e5534b', // STOP control only
+  redSoft: 'rgba(229,83,75,0.16)',
 
-  // metallic gold accent (flat tokens; gradients live in ui/Gold.tsx)
-  gold: GOLD,
-  goldDeep: GOLD_DEEP,
-  goldSoft: GOLD_SOFT,
+  // blue accent (flat tokens; the surface gradient lives in ui/Gold.tsx)
+  gold: ACCENT,
+  goldDeep: ACCENT_DEEP,
+  goldSoft: ACCENT_SOFT,
 
-  // legacy accent aliases → gold
-  purple: GOLD,
-  purpleDim: GOLD_DEEP,
-  purpleSoft: GOLD_SOFT,
+  // legacy accent aliases → blue accent
+  purple: ACCENT,
+  purpleDim: ACCENT_DEEP,
+  purpleSoft: ACCENT_SOFT,
 
-  // terminal — always black
-  termBg: '#08070a',
-  termText: '#ece7df',
-  termDim: '#7d746c',
-  termPrompt: GOLD,
-  termRed: '#e2313c',
+  // terminal
+  termBg: '#0b0f15',
+  termText: '#d7dee7',
+  termDim: '#6a7480',
+  termPrompt: ACCENT,
+  termRed: '#e5534b',
 
   mono: 'monospace',
 };
 
-/** Metallic gold gradient stops (dark → light band → dark), for Skia + LinearGradient. */
-export const GOLD_GRADIENT = ['#8a6318', '#c79e3e', '#f4e6ab', '#e9ce79', '#7c5714'];
+/** Accent gradient stops (deep → light band → deep), for LinearGradient surfaces. */
+export const GOLD_GRADIENT = ['#2f66c0', '#4d8bec', '#8cc0ff', '#4d8bec', '#2f66c0'];
 export const GOLD_GRADIENT_LOCATIONS = [0, 0.3, 0.5, 0.68, 1];
 
-/** Vertical metallic gold for text (top-lit sheen). */
-export const GOLD_TEXT_GRADIENT = ['#fbe7a6', '#e4c05a', '#b98428', '#f5e08c', '#9a6e22', '#e9ce79'];
+/** Legacy text-gradient stops (unused since the wordmark became plain text). */
+export const GOLD_TEXT_GRADIENT = ['#8cc0ff', '#6aa9ff', '#3d7de0', '#8cc0ff', '#2f66c0', '#4d8bec'];
 
 export type Theme = typeof theme;
