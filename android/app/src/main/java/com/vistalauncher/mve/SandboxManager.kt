@@ -29,7 +29,8 @@ class SandboxManager(private val ctx: Context) {
   private fun sandboxRoot(): File = File(ctx.filesDir, "mve-sandbox").apply { if (!exists()) mkdirs() }
   private fun homeDir(): File = File(sandboxRoot(), "home").apply { if (!exists()) mkdirs() }
   private fun alpineDir(): File = File(sandboxRoot(), "alpine")
-  private fun installedMarker(): File = File(alpineDir(), ".installed")
+  // v2: re-extract rootfs for installs whose extractor dropped exec bits.
+  private fun installedMarker(): File = File(alpineDir(), ".installed-v2")
   private fun cacheTmp(): File = File(ctx.cacheDir, "proot-tmp").apply { if (!exists()) mkdirs() }
 
   private fun prootBinary(): File? {
@@ -71,6 +72,8 @@ class SandboxManager(private val ctx: Context) {
       return
     }
 
+    // A rootfs without a current marker is stale or broken — start clean.
+    if (alpineDir().exists() && !installedMarker().exists()) alpineDir().deleteRecursively()
     val root = alpineDir().apply { if (!exists()) mkdirs() }
     val abi = alpineArch()
     val url = ALPINE_ROOTFS.replace("{arch}", abi)
@@ -237,6 +240,22 @@ class SandboxManager(private val ctx: Context) {
             val f = File(destRoot, name)
             f.parentFile?.mkdirs()
             f.outputStream().use { out -> copyN(gz, out, size) }
+            // tar mode bits: without this busybox/apk extract non-executable
+            // and every exec inside proot fails.
+            val modeStr = cString(header, 100, 8).trim()
+            val mode = if (modeStr.isEmpty()) 0 else (modeStr.toIntOrNull(8) ?: 0)
+            if (mode and 0x49 != 0) f.setExecutable(true, false)
+            skipPadding(gz, size)
+          }
+          '1' -> { // hardlink — copy the already-extracted link target
+            val src = File(destRoot, linkName)
+            val dst = File(destRoot, name)
+            dst.parentFile?.mkdirs()
+            if (src.exists()) {
+              src.copyTo(dst, overwrite = true)
+              if (src.canExecute()) dst.setExecutable(true, false)
+            }
+            skipN(gz, size)
             skipPadding(gz, size)
           }
           else -> { // hardlink, char/block dev, fifo — skip contents
