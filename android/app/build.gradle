@@ -50,7 +50,11 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            signingConfig signingConfigs.release
+            // Sign the release APK with the debug keystore so it installs by
+            // sideloading with no secrets. A release build (unlike debug) has
+            // React Native dev support OFF and the JS bundle baked into assets,
+            // so it never falls back to a Metro dev server or shows a redbox.
+            signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             shrinkResources enableProguardInReleaseBuilds

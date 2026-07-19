@@ -65,10 +65,12 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
-      - name: Build debug APK
+      - name: Build release APK
         run: |
           cd android
-          ./gradlew assembleDebug --no-configuration-cache
+          # Release build: dev support off, JS bundled into assets, signed with
+          # the debug keystore so it sideloads with no secrets.
+          ./gradlew assembleRelease --no-configuration-cache
 
       - name: Stage APK
         env:
@@ -78,7 +80,7 @@ jobs:
           # The stable link serves the arm64 APK (~1/3 the size of universal —
           # a 300 MB mobile download kept failing). armv7 and universal ship as
           # extra assets for older phones.
-          OUT=android/app/build/outputs/apk/debug
+          OUT=android/app/build/outputs/apk/release
           APK=$(ls $OUT/*arm64-v8a*.apk 2>/dev/null | head -1)
           if [ -z "$APK" ]; then
             APK=$(ls -S $OUT/*.apk | head -1)
