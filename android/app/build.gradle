@@ -62,6 +62,16 @@ android {
         }
     }
 
+    // Extract native libs to real files on install. proot ships as libproot.so
+    // and is exec'd as a program out of nativeLibraryDir — with the modern
+    // load-from-APK packaging the file never exists on disk, the app can't see
+    // it, and Alpine can never be enabled.
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
     // Split APKs by ABI for smaller download sizes
     splits {
         abi {
