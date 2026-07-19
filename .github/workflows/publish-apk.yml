@@ -1,0 +1,96 @@
+name: Publish IntelliShell APK
+
+# Builds an installable (debug-signed) APK on every push to main and attaches it
+# to a rolling, non-draft "android-preview" release, so the download URL is
+# always the same:
+#   https://github.com/ether4o4/Intelli-Shell/releases/download/android-preview/intellishell.apk
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      asset_name:
+        description: 'APK file name'
+        required: false
+        default: intellishell.apk
+
+permissions:
+  contents: write
+
+# The build compiles proot from source with the NDK (scripts/build-proot.sh) and
+# bundles it per ABI, so the APK installs full Alpine Linux. If the compile fails
+# for an ABI, that ABI ships the built-in toybox shell instead — the build never
+# breaks.
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build proot from source (NDK)
+        continue-on-error: true
+        run: |
+          chmod +x scripts/build-proot.sh
+          ./scripts/build-proot.sh
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Build debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug --no-configuration-cache
+
+      - name: Stage APK
+        env:
+          ASSET_NAME: ${{ github.event.inputs.asset_name || 'intellishell.apk' }}
+        run: |
+          mkdir -p dist
+          # Prefer a universal APK; otherwise take the largest debug APK built.
+          APK=$(ls android/app/build/outputs/apk/debug/*universal*.apk 2>/dev/null | head -1)
+          if [ -z "$APK" ]; then
+            APK=$(ls -S android/app/build/outputs/apk/debug/*.apk | head -1)
+          fi
+          echo "Staging $APK -> dist/${ASSET_NAME}"
+          cp "$APK" "dist/${ASSET_NAME}"
+
+      - name: Publish rolling release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ASSET_NAME: ${{ github.event.inputs.asset_name || 'intellishell.apk' }}
+        run: |
+          # Refresh the rolling release so the asset (and its stable URL) updates.
+          gh release delete android-preview --yes --cleanup-tag 2>/dev/null || true
+          gh release create android-preview "dist/${ASSET_NAME}" \
+            --title "IntelliShell — Android Preview" \
+            --notes "Rolling debug-signed APK: split-screen AI chat + live terminal, on-device or cloud models. Enable 'Install unknown apps' to sideload." \
+            --latest
