@@ -8,7 +8,6 @@
  * the same time.
  */
 import {ChatMessage, LlmProvider, AbortSignalLike} from '../llm/types';
-import {SYSTEM_PROMPT} from './prompt';
 import {Bridge} from '../native/bridge';
 
 const FENCE = /```sh[^\n]*\n([\s\S]*?)```/i;
@@ -44,6 +43,7 @@ function looksLikeError(out: string): boolean {
 
 export async function runAgent(
   provider: LlmProvider,
+  systemPrompt: string,
   history: ChatMessage[],
   userText: string,
   cb: AgentCallbacks,
@@ -64,7 +64,7 @@ export async function runAgent(
     let full = '';
     try {
       full = await provider.stream({
-        messages: [{role: 'system', content: SYSTEM_PROMPT}, ...history],
+        messages: [{role: 'system', content: systemPrompt}, ...history],
         onDelta: d => cb.onAssistantDelta(id, d),
         signal,
       });

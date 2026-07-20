@@ -117,8 +117,26 @@ class SandboxManager(private val ctx: Context) {
     return out.trimEnd()
   }
 
+  /** (Re)write DNS + hosts every run so name resolution never depends on a
+   *  stale or half-written rootfs. musl reads these; ping still won't work
+   *  (Android blocks raw ICMP) but apk/wget resolve fine. */
+  private fun writeNetConfig(root: File) {
+    try {
+      File(root, "etc").mkdirs()
+      File(root, "etc/resolv.conf").writeText(
+          "nameserver 8.8.8.8\n" +
+              "nameserver 1.1.1.1\n" +
+              "nameserver 8.8.4.4\n" +
+              // IPv6 resolvers for carrier networks that are IPv6-only (NAT64).
+              "nameserver 2001:4860:4860::8888\n" +
+              "nameserver 2606:4700:4700::1111\n")
+      File(root, "etc/hosts").writeText("127.0.0.1 localhost\n::1 localhost\n")
+    } catch (_: Exception) {}
+  }
+
   private fun prootCommand(command: String): ProcessBuilder {
     val proot = prootBinary()!!
+    writeNetConfig(alpineDir())
     val root = alpineDir().absolutePath
     val args =
         mutableListOf(

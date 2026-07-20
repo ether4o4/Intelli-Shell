@@ -5,6 +5,7 @@
  */
 import {getState, actions} from '../store';
 import {runAgent} from './agent';
+import {buildSystemPrompt} from './prompt';
 import {makeCloudProvider} from '../llm/openaiStream';
 import {makeLocalProvider} from '../llm/localLlama';
 import {LlmProvider} from '../llm/types';
@@ -72,6 +73,7 @@ export async function send(text: string): Promise<void> {
   try {
     await runAgent(
       provider,
+      buildSystemPrompt(getState().sandbox.alpine),
       getState().history,
       t,
       {
