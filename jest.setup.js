@@ -8,6 +8,8 @@ jest.mock('react-native-linear-gradient', () => 'LinearGradient');
 
 // Stub the Skia surface the glass components touch: drawing components render
 // as host strings, Skia.RuntimeEffect compiles to null, frame hooks are inert.
+// `virtual` because the package is no longer a dependency — without it the
+// whole suite fails at setup with "Cannot find module".
 jest.mock('@shopify/react-native-skia', () => ({
   Canvas: 'SkiaCanvas',
   Group: 'SkiaGroup',
@@ -27,4 +29,4 @@ jest.mock('@shopify/react-native-skia', () => ({
   },
   useDerivedValue: fn => ({ value: typeof fn === 'function' ? fn() : undefined }),
   useFrame: () => {},
-}));
+}), { virtual: true });
