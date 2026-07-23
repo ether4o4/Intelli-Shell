@@ -6,12 +6,19 @@ itself in the chat while it runs real commands in the terminal below.
 
 ## Download
 
-Every push to `main` publishes an installable (debug-signed) APK at a stable URL:
+Every push to `main` rebuilds the APK and republishes it, so this link
+**always serves the latest build**:
 
-**→ https://github.com/ether4o4/Intelli-Shell/releases/download/android-preview/intellishell.apk**
+**→ https://github.com/ether4o4/Intelli-Shell/releases/latest/download/intellishell.apk**
 
-Enable "Install unknown apps" to sideload. The link never changes; the file
-behind it refreshes with each build.
+(The older stable URL
+`…/releases/download/android-preview/intellishell.apk` points at the same
+file and keeps working.)
+
+Enable "Install unknown apps" to sideload; installing over the top keeps your
+settings and the Alpine rootfs. Not sure which build you have? The
+[release page](https://github.com/ether4o4/Intelli-Shell/releases/latest)
+shows the exact commit and build time of the APK currently behind the link.
 
 ## The split screen
 

@@ -1,8 +1,9 @@
 name: Publish IntelliShell APK
 
 # Builds an installable (debug-signed) APK on every push to main and attaches it
-# to a rolling, non-draft "android-preview" release, so the download URL is
-# always the same:
+# to a rolling, non-draft "android-preview" release marked --latest, so both
+# URLs always serve the newest build:
+#   https://github.com/ether4o4/Intelli-Shell/releases/latest/download/intellishell.apk
 #   https://github.com/ether4o4/Intelli-Shell/releases/download/android-preview/intellishell.apk
 on:
   push:
@@ -97,10 +98,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ASSET_NAME: ${{ github.event.inputs.asset_name || 'intellishell.apk' }}
+          COMMIT_MSG: ${{ github.event.head_commit.message || github.sha }}
         run: |
           # Refresh the rolling release so the asset (and its stable URL) updates.
+          # Notes carry the commit + build time so anyone can tell which build
+          # the link currently serves.
+          BUILT_AT=$(date -u '+%Y-%m-%d %H:%M UTC')
+          SHORT_SHA=${GITHUB_SHA::7}
+          SUBJECT=$(printf '%s' "$COMMIT_MSG" | head -n 1)
+          NOTES=$(printf '%s\n\n%s\n%s' \
+            "Rolling debug-signed APK: split-screen AI chat + live terminal, on-device or cloud models. Enable 'Install unknown apps' to sideload." \
+            "**This build:** [\`${SHORT_SHA}\`](https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}) — ${SUBJECT}" \
+            "**Built:** ${BUILT_AT} (run #${GITHUB_RUN_NUMBER})")
           gh release delete android-preview --yes --cleanup-tag 2>/dev/null || true
           gh release create android-preview dist/* \
-            --title "IntelliShell — Android Preview" \
-            --notes "Rolling debug-signed APK: split-screen AI chat + live terminal, on-device or cloud models. Enable 'Install unknown apps' to sideload." \
+            --title "IntelliShell — Android Preview (build ${SHORT_SHA})" \
+            --notes "$NOTES" \
             --latest
