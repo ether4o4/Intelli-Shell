@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:background="@drawable/dash_bg_field"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <!-- Selection is managed by the fragment, not a RadioGroup: the rows are added
+         dynamically, and RadioGroup only de-selects its own direct children. -->
+    <RadioButton
+        android:id="@+id/row_model_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/dash_accent"
+        android:clickable="false"
+        android:focusable="false" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/row_model_name"
+            style="@style/DashBody"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/row_model_meta"
+            style="@style/DashMuted"
+            android:layout_marginTop="2dp"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/row_model_download"
+        style="@style/DashButton"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="0dp"
+        android:text="@string/dash_config_download" />
+
+</LinearLayout>

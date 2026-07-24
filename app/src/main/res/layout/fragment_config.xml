@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dash_bg"
+    android:fillViewport="true"
+    android:padding="12dp"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Termux first: nothing below the cloud section works without it. -->
+        <LinearLayout style="@style/DashCard">
+
+            <TextView
+                style="@style/DashTitle"
+                android:text="@string/dash_config_termux" />
+
+            <TextView
+                android:id="@+id/config_termux_status"
+                style="@style/DashMuted"
+                android:layout_marginTop="6dp"
+                android:lineSpacingExtra="2dp" />
+
+            <Button
+                android:id="@+id/config_termux_action"
+                style="@style/DashButton"
+                android:text="@string/dash_config_termux_open" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/DashCard">
+
+            <TextView
+                style="@style/DashTitle"
+                android:text="@string/dash_config_provider" />
+
+            <RadioGroup
+                android:id="@+id/config_provider_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/config_provider_cloud"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/dash_accent"
+                    android:paddingLeft="8dp"
+                    android:text="@string/dash_config_provider_cloud"
+                    android:textColor="@color/dash_text"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/config_provider_local"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/dash_accent"
+                    android:paddingLeft="8dp"
+                    android:text="@string/dash_config_provider_local"
+                    android:textColor="@color/dash_text"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/DashCard">
+
+            <TextView
+                style="@style/DashTitle"
+                android:text="@string/dash_config_cloud" />
+
+            <EditText
+                android:id="@+id/config_base_url"
+                style="@style/DashField"
+                android:hint="@string/dash_config_base_url_hint"
+                android:inputType="textUri"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/config_model"
+                style="@style/DashField"
+                android:hint="@string/dash_config_model_hint"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/config_key"
+                style="@style/DashField"
+                android:hint="@string/dash_config_key_hint"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+
+            <TextView
+                style="@style/DashMuted"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="2dp"
+                android:text="@string/dash_config_key_note" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/DashCard">
+
+            <TextView
+                style="@style/DashTitle"
+                android:text="@string/dash_config_local" />
+
+            <EditText
+                android:id="@+id/config_hf_token"
+                style="@style/DashField"
+                android:hint="@string/dash_config_hf_hint"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+
+            <TextView
+                style="@style/DashLabel"
+                android:text="@string/dash_config_catalog" />
+
+            <LinearLayout
+                android:id="@+id/config_model_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="vertical" />
+
+            <EditText
+                android:id="@+id/config_port"
+                style="@style/DashField"
+                android:hint="@string/dash_config_port_hint"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/config_ctx"
+                style="@style/DashField"
+                android:hint="@string/dash_config_ctx_hint"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/config_install_llama"
+                    style="@style/DashButton"
+                    android:text="@string/dash_config_install_llama" />
+
+                <Button
+                    android:id="@+id/config_start_server"
+                    style="@style/DashButtonAccent"
+                    android:text="@string/dash_config_start_server" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/config_stop_server"
+                    style="@style/DashButton"
+                    android:text="@string/dash_config_stop_server" />
+
+                <Button
+                    android:id="@+id/config_check_server"
+                    style="@style/DashButton"
+                    android:text="@string/dash_refresh" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/config_server_status"
+                style="@style/DashMuted"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/DashCard">
+
+            <TextView
+                style="@style/DashTitle"
+                android:text="@string/dash_config_advanced" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/config_external_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/dash_config_external"
+                android:textColor="@color/dash_text"
+                android:textSize="14sp"
+                app:thumbTint="@color/dash_accent"
+                app:trackTint="@color/dash_border" />
+
+            <TextView
+                style="@style/DashMuted"
+                android:layout_marginTop="4dp"
+                android:lineSpacingExtra="2dp"
+                android:text="@string/dash_config_external_note" />
+
+            <EditText
+                android:id="@+id/config_server_url"
+                style="@style/DashField"
+                android:hint="@string/dash_config_server_url_hint"
+                android:inputType="textUri"
+                android:maxLines="1" />
+
+            <Button
+                android:id="@+id/config_save"
+                style="@style/DashButtonAccent"
+                android:text="@string/dash_save" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

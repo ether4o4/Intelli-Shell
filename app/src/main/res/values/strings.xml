@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IntelliShell</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="stop">STOP</string>
+    <string name="send">Send</string>
+    <string name="chat_hint">Ask IntelliShell, or pull in a script…</string>
+    <string name="scripts">Scripts</string>
+    <string name="notes">Notes</string>
+    <string name="memory">Memory</string>
+    <string name="ai_config">AI Config</string>
+</resources>

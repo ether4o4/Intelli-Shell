@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Dashboard palette. Kept in its own file so the tabs can be restyled without
+    touching whatever colours the terminal half of the app needs.
+-->
+<resources>
+
+    <!-- The four brand colours. -->
+    <color name="dash_bg">#FF0D1117</color>
+    <color name="dash_surface">#FF161B22</color>
+    <color name="dash_text">#FFE6EDF3</color>
+    <color name="dash_accent">#FF6AA9FF</color>
+
+    <!-- Derived tones. Secondary text and hairlines need their own values;
+         reusing the four above at reduced alpha looks muddy over #0d1117. -->
+    <color name="dash_muted">#FF8B949E</color>
+    <color name="dash_border">#FF30363D</color>
+    <color name="dash_danger">#FFF85149</color>
+    <color name="dash_ok">#FF3FB950</color>
+
+    <!-- Accent at low alpha: selected chips and pressed buttons. -->
+    <color name="dash_accent_dim">#336AA9FF</color>
+
+</resources>

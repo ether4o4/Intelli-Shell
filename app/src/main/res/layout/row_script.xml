@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DashCard"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/row_script_name"
+        style="@style/DashTitle" />
+
+    <TextView
+        android:id="@+id/row_script_meta"
+        style="@style/DashMuted"
+        android:layout_marginTop="2dp" />
+
+    <TextView
+        android:id="@+id/row_script_tags"
+        style="@style/DashMuted"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/dash_accent" />
+
+    <!-- A preview, not the script: long bodies would push the row actions off screen. -->
+    <TextView
+        android:id="@+id/row_script_preview"
+        style="@style/DashMuted"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:fontFamily="monospace"
+        android:maxLines="4"
+        android:textSize="12sp"
+        android:typeface="monospace" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/row_script_run"
+            style="@style/DashButtonAccent"
+            android:text="@string/dash_run" />
+
+        <Button
+            android:id="@+id/row_script_edit"
+            style="@style/DashButton"
+            android:text="@string/dash_edit" />
+
+        <Button
+            android:id="@+id/row_script_delete"
+            style="@style/DashButtonDanger"
+            android:text="@string/dash_delete" />
+
+    </LinearLayout>
+
+</LinearLayout>
