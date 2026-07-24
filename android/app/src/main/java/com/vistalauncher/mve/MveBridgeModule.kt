@@ -156,6 +156,13 @@ class MveBridgeModule(private val reactContext: ReactApplicationContext) :
         connectTimeout = 30000
         readTimeout = 60000
         instanceFollowRedirects = true
+        // Authenticate to Hugging Face so private/gated models can be downloaded.
+        // Only attached for HF hosts; the signed CDN URL it redirects to needs no auth.
+        val host = URL(url).host ?: ""
+        if (host.endsWith("huggingface.co") || host.endsWith("hf.co")) {
+          val hfTok = prefs.getString("pref_hf.token", "") ?: ""
+          if (hfTok.isNotEmpty()) setRequestProperty("Authorization", "Bearer $hfTok")
+        }
       }
       val code = conn.responseCode
       if (code !in 200..299) {
@@ -203,5 +210,36 @@ class MveBridgeModule(private val reactContext: ReactApplicationContext) :
   fun setPref(key: String, value: String, promise: Promise) = io.execute {
     prefs.edit().putString("pref_$key", value).apply()
     promise.resolve(null)
+  }
+
+  // ---- Storage access (Termux-level file permissions) ----------------------
+
+  /** True once the app has all-files access, so the agent's shell can reach /sdcard. */
+  @ReactMethod
+  fun hasStoragePermission(promise: Promise) {
+    promise.resolve(
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R)
+            android.os.Environment.isExternalStorageManager()
+        else true,
+    )
+  }
+
+  /** Open the system "All files access" settings page for this app. */
+  @ReactMethod
+  fun requestStoragePermission(promise: Promise) {
+    try {
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+        val intent =
+            android.content.Intent(
+                android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                android.net.Uri.parse("package:" + reactContext.packageName),
+            )
+        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+        reactContext.startActivity(intent)
+      }
+      promise.resolve(null)
+    } catch (e: Exception) {
+      promise.reject("storage_perm_error", e)
+    }
   }
 }

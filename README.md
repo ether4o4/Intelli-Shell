@@ -1,8 +1,26 @@
 # IntelliShell
 
-An AI agent with its own Linux shell, in one Android app. **Chat on top, a live
-terminal on the bottom.** Tell it what to do and watch it work — it explains
-itself in the chat while it runs real commands in the terminal below.
+**Termux with a built-in AI agent** — one Android app where the AI has the same
+file and shell reach you do. **Chat on top, a live terminal on the bottom:** tell
+it what to do and watch it work, running real commands in the terminal below.
+
+## Two views
+
+- **Terminal** — the split screen: AI chat over a live shell.
+- **Dashboard** (▦ in the app bar) — three tabs:
+  - **Scripts** — save shell scripts and **Run** them in the terminal in one tap.
+  - **Notes** — quick persistent notes.
+  - **AI config** — provider + OpenAI/API keys, a **Hugging Face token** (for
+    private/gated model downloads), on-device **model downloads**, the Linux
+    shell installer, and **full file access** (Termux-level) for the agent.
+
+Scripts and notes are saved on-device and survive restarts.
+
+## File access
+
+IntelliShell requests Android's **All files access** so the agent's shell can
+read and write your storage like Termux. Grant it from Dashboard → AI config →
+File access.
 
 ## Download
 
@@ -40,10 +58,12 @@ result back to the model, and continues — until the task is done.
 
 ## Models: on-device or cloud
 
-- **On-device** — pick a small GGUF model (Qwen2.5 3B, Llama 3.2 3B, Gemma 2 2B,
-  Phi-3.5), download it from Hugging Face right in the app, and run it locally via
-  **llama.rn** (llama.cpp). Private, offline, no key. Or paste **any GGUF link
-  from Hugging Face** in Settings to add your own model to the list.
+- **On-device** — download a small GGUF model from Hugging Face right in the app
+  and run it locally via **llama.rn** (llama.cpp). Private, offline, no key. The
+  list leads with two agent-tuned tool-callers — **xLAM-2 3B** (Salesforce, fast
+  Q4) and **RefinedToolCall V5 3B** (Q6) — alongside Qwen2.5 3B, Llama 3.2 3B,
+  Gemma 2 2B, and Phi-3.5. Paste **any GGUF link** to add your own, and set a
+  Hugging Face token to pull private/gated repos.
 - **Cloud** — point it at any OpenAI-compatible endpoint (OpenAI, OpenRouter,
   DeepSeek, Groq, or your own gateway) with your own key. Streams live. Your key
   stays on the device.

@@ -80,6 +80,15 @@ export const Bridge = {
     return M && M.setPref ? M.setPref(key, value) : Promise.resolve();
   },
 
+  /** Whether the app has all-files access, so the shell can reach /sdcard like Termux. */
+  hasStoragePermission(): Promise<boolean> {
+    return M && M.hasStoragePermission ? M.hasStoragePermission() : Promise.resolve(false);
+  },
+  /** Open the system "All files access" page so the user can grant it. */
+  requestStoragePermission(): Promise<void> {
+    return M && M.requestStoragePermission ? M.requestStoragePermission() : Promise.resolve();
+  },
+
   /** Force-kill any running shell process. Part of the emergency stop. */
   killAll(): Promise<void> {
     return M && M.killAll ? M.killAll() : Promise.resolve();

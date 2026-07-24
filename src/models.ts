@@ -14,6 +14,22 @@ export interface LocalModel {
 
 export const LOCAL_MODELS: LocalModel[] = [
   {
+    id: 'xlam2-3b-fc-q4',
+    name: 'xLAM-2 3B Tool-Caller',
+    params: '3B',
+    size: '~1.9 GB',
+    note: 'Best-in-class function calling, fast Q4 (Salesforce)',
+    url: 'https://huggingface.co/Salesforce/xLAM-2-3b-fc-r-gguf/resolve/main/xLAM-2-3B-fc-r-Q4_K_M.gguf',
+  },
+  {
+    id: 'refinedtoolcall-v5-3b-q6',
+    name: 'RefinedToolCall V5 3B',
+    params: '3B',
+    size: '~2.5 GB',
+    note: 'Tool-calling & agentic, higher-fidelity Q6 (Qwen2)',
+    url: 'https://huggingface.co/RefinedNeuro/RefinedToolCallV5-3b/resolve/main/RefinedToolCallV5-3b-Q6_K.gguf',
+  },
+  {
     id: 'qwen2.5-3b-instruct-q4',
     name: 'Qwen2.5 3B Instruct',
     params: '3B',
