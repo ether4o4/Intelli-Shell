@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   build:
@@ -48,7 +49,28 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build debug APK
-        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          ./gradlew :app:assembleDebug --no-daemon --stacktrace > build.log 2>&1
+          STATUS=$?
+          if [ "$STATUS" -ne 0 ]; then
+            tail -n 180 build.log > build-tail.log
+            {
+              echo "Build failed for commit ${GITHUB_SHA}."
+              echo
+              echo '```text'
+              cat build-tail.log
+              echo '```'
+            } > build-issue.md
+            gh issue create \
+              --title "CI BUILD DIAGNOSTIC ${GITHUB_SHA::7}" \
+              --body-file build-issue.md || true
+            cat build-tail.log
+            exit "$STATUS"
+          fi
+          cat build.log
 
       - name: Stage APK
         if: github.event_name != 'pull_request'
