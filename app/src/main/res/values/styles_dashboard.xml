@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Widget styles for the dashboard tabs.
+
+    These deliberately do not inherit from any Material parent. The dashboard has to
+    render correctly under whatever application theme ends up hosting it, so every
+    colour a dark background depends on - text, hint, stroke - is stated outright
+    rather than resolved from a theme attribute that may not be defined.
+-->
+<resources>
+
+    <style name="DashCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/dash_bg_card</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+    </style>
+
+    <style name="DashTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/dash_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Field captions and section sub-headings. -->
+    <style name="DashLabel">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/dash_muted</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="DashBody">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/dash_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="DashMuted">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/dash_muted</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="DashField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:background">@drawable/dash_bg_field</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/dash_text</item>
+        <item name="android:textColorHint">@color/dash_muted</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Code and command input. Monospace matters here: alignment is meaning. -->
+    <style name="DashFieldMono" parent="DashField">
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:gravity">top|start</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="DashButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/dash_bg_button</item>
+        <item name="android:textColor">@color/dash_text</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:paddingTop">9dp</item>
+        <item name="android:paddingBottom">9dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="DashButtonAccent" parent="DashButton">
+        <item name="android:background">@drawable/dash_bg_button_accent</item>
+        <!-- Dark ink on the accent fill; #e6edf3 on #6aa9ff is unreadable. -->
+        <item name="android:textColor">@color/dash_bg</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DashButtonDanger" parent="DashButton">
+        <item name="android:textColor">@color/dash_danger</item>
+    </style>
+
+</resources>

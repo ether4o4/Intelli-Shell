@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Dashboard copy. Every name is prefixed `dash_` so this file can be dropped in
+    alongside the app's main strings.xml without colliding with it.
+-->
+<resources>
+
+    <!-- Tabs -->
+    <string name="dash_tab_scripts">Scripts</string>
+    <string name="dash_tab_notes">Notes</string>
+    <string name="dash_tab_memory">Memory</string>
+    <string name="dash_tab_config">AI Config</string>
+
+    <!-- Shared actions -->
+    <string name="dash_save">Save</string>
+    <string name="dash_clear">Clear</string>
+    <string name="dash_edit">Edit</string>
+    <string name="dash_delete">Delete</string>
+    <string name="dash_run">Run</string>
+    <string name="dash_cancel">Cancel</string>
+    <string name="dash_refresh">Refresh</string>
+    <string name="dash_all">All</string>
+    <string name="dash_delete_confirm_title">Delete this?</string>
+    <string name="dash_delete_confirm_named">Delete “%1$s”? This cannot be undone.</string>
+
+    <!-- Scripts -->
+    <string name="dash_scripts_search_hint">Search name, body or language</string>
+    <string name="dash_scripts_filter">Filter by tag</string>
+    <string name="dash_scripts_editor">Script editor</string>
+    <string name="dash_scripts_editing">Editing: %1$s</string>
+    <string name="dash_scripts_name_hint">Name</string>
+    <string name="dash_scripts_language_hint">Language (bash, python, …)</string>
+    <string name="dash_scripts_run_hint">Run command (optional — the body runs if empty)</string>
+    <string name="dash_scripts_body_hint">Script body</string>
+    <string name="dash_scripts_tags">Tags</string>
+    <string name="dash_scripts_empty">No scripts yet. Write one above and save it.</string>
+    <string name="dash_scripts_none_match">No scripts match that search.</string>
+    <string name="dash_scripts_saved">Script saved</string>
+    <string name="dash_scripts_deleted">Script deleted</string>
+    <string name="dash_scripts_need_name">Name the script first.</string>
+    <string name="dash_scripts_need_body">Nothing to save — the body is empty.</string>
+    <!-- language · saved date -->
+    <string name="dash_scripts_meta">%1$s · saved %2$s</string>
+    <string name="dash_scripts_tag_line">Tags: %1$s</string>
+
+    <!-- Notes -->
+    <string name="dash_notes_search_hint">Search notes</string>
+    <string name="dash_notes_hashtags">Hashtags</string>
+    <string name="dash_notes_editor">Note editor</string>
+    <string name="dash_notes_editing">Editing: %1$s</string>
+    <string name="dash_notes_title_hint">Title</string>
+    <string name="dash_notes_body_hint">Write the note. Use #hashtags anywhere to file it.</string>
+    <string name="dash_notes_empty">No notes yet.</string>
+    <string name="dash_notes_none_match">No notes match that search.</string>
+    <string name="dash_notes_saved">Note saved</string>
+    <string name="dash_notes_deleted">Note deleted</string>
+    <string name="dash_notes_need_body">Nothing to save — the note is empty.</string>
+    <string name="dash_notes_no_hashtags">No hashtags yet — type #something in a note.</string>
+    <string name="dash_notes_meta">edited %1$s</string>
+    <string name="dash_notes_filtering">Showing notes tagged #%1$s. Tap the chip again to clear.</string>
+
+    <!-- Memory -->
+    <string name="dash_memory_title">What the assistant remembers</string>
+    <string name="dash_memory_explainer">The assistant writes here by itself as you work, and everything it stores is sent along with every chat. Correct anything it got wrong, delete what it should forget, or add facts of your own. Keep each entry to one short line.</string>
+    <string name="dash_memory_editor">Add or correct a fact</string>
+    <string name="dash_memory_editing">Correcting an existing fact</string>
+    <string name="dash_memory_category">Category</string>
+    <string name="dash_memory_content_hint">One short fact</string>
+    <string name="dash_memory_empty">Nothing remembered yet.</string>
+    <string name="dash_memory_saved">Saved to memory</string>
+    <string name="dash_memory_deleted">Forgotten</string>
+    <string name="dash_memory_need_content">Type the fact first.</string>
+    <string name="dash_memory_meta">updated %1$s</string>
+
+    <!-- AI Config: provider -->
+    <string name="dash_config_provider">AI provider</string>
+    <string name="dash_config_provider_cloud">Cloud API</string>
+    <string name="dash_config_provider_local">Local model, served from Termux</string>
+    <string name="dash_config_cloud">Cloud API</string>
+    <string name="dash_config_base_url_hint">Base URL (e.g. https://api.openai.com/v1)</string>
+    <string name="dash_config_model_hint">Model name (e.g. gpt-4o-mini)</string>
+    <string name="dash_config_key_hint">API key</string>
+    <string name="dash_config_key_note">The key is stored in this app\'s private preferences and never leaves the device except in requests to the base URL above.</string>
+
+    <!-- AI Config: local models -->
+    <string name="dash_config_local">Local models</string>
+    <string name="dash_config_hf_hint">Hugging Face token (only needed for gated repos)</string>
+    <string name="dash_config_catalog">Pick a model, then download it</string>
+    <string name="dash_config_download">Download</string>
+    <string name="dash_config_port_hint">Server port</string>
+    <string name="dash_config_ctx_hint">Context size (tokens)</string>
+    <string name="dash_config_install_llama">Install llama.cpp</string>
+    <string name="dash_config_start_server">Start server</string>
+    <string name="dash_config_stop_server">Stop server</string>
+    <string name="dash_config_model_meta">%1$s · %2$s · %3$s</string>
+    <string name="dash_config_server_up">Server responding on %1$s:%2$d</string>
+    <string name="dash_config_server_down">Nothing listening on %1$s:%2$d</string>
+    <string name="dash_config_server_checking">Checking server…</string>
+
+    <!-- AI Config: advanced -->
+    <string name="dash_config_advanced">Advanced</string>
+    <string name="dash_config_external">Use a server I run myself</string>
+    <string name="dash_config_external_note">Skips the buttons above and talks to this URL instead — an llama.cpp, Ollama or LM Studio server anywhere you can reach.</string>
+    <string name="dash_config_server_url_hint">Server URL (e.g. http://127.0.0.1:8080)</string>
+
+    <!-- AI Config: Termux -->
+    <string name="dash_config_termux">Termux backend</string>
+    <string name="dash_config_termux_missing">Termux is not installed. Everything local needs it.</string>
+    <string name="dash_config_termux_ok">Termux is installed.</string>
+    <string name="dash_config_termux_perm_ok">RUN_COMMAND permission granted.</string>
+    <string name="dash_config_termux_perm_missing">RUN_COMMAND permission is missing. Install Termux first, then reinstall IntelliShell, and set allow-external-apps=true in ~/.termux/termux.properties.</string>
+    <string name="dash_config_termux_install">Install Termux</string>
+    <string name="dash_config_termux_open">Open Termux</string>
+
+    <!-- AI Config: feedback -->
+    <string name="dash_config_saved">Settings saved</string>
+    <string name="dash_config_sent">Sent to Termux — watch the Termux notification for progress.</string>
+    <string name="dash_config_refused">Termux refused the command. Check that allow-external-apps=true is set in ~/.termux/termux.properties.</string>
+    <string name="dash_config_need_termux">Install Termux first.</string>
+    <string name="dash_config_need_model">Pick a model first.</string>
+    <string name="dash_config_downloading">Downloading %1$s in the background.</string>
+    <string name="dash_config_no_store">No app on this device can open the download page.</string>
+
+</resources>

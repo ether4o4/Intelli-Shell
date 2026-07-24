@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DashCard"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/row_memory_content"
+        style="@style/DashBody" />
+
+    <TextView
+        android:id="@+id/row_memory_meta"
+        style="@style/DashMuted"
+        android:layout_marginTop="4dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/row_memory_edit"
+            style="@style/DashButton"
+            android:text="@string/dash_edit" />
+
+        <Button
+            android:id="@+id/row_memory_delete"
+            style="@style/DashButtonDanger"
+            android:text="@string/dash_delete" />
+
+    </LinearLayout>
+
+</LinearLayout>

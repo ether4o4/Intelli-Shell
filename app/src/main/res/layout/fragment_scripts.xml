@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dash_bg"
+    android:fillViewport="true"
+    android:padding="12dp"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/scripts_search"
+            style="@style/DashField"
+            android:layout_marginTop="0dp"
+            android:hint="@string/dash_scripts_search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <TextView
+            style="@style/DashLabel"
+            android:text="@string/dash_scripts_filter" />
+
+        <HorizontalScrollView
+            android:id="@+id/scripts_filter_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/scripts_filter_strip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+        </HorizontalScrollView>
+
+        <LinearLayout style="@style/DashCard">
+
+            <TextView
+                android:id="@+id/scripts_editor_title"
+                style="@style/DashTitle"
+                android:text="@string/dash_scripts_editor" />
+
+            <EditText
+                android:id="@+id/scripts_name"
+                style="@style/DashField"
+                android:hint="@string/dash_scripts_name_hint"
+                android:inputType="textCapSentences"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/scripts_language"
+                style="@style/DashField"
+                android:hint="@string/dash_scripts_language_hint"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/scripts_body"
+                style="@style/DashFieldMono"
+                android:hint="@string/dash_scripts_body_hint"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:minLines="6"
+                android:scrollHorizontally="false" />
+
+            <EditText
+                android:id="@+id/scripts_run_command"
+                style="@style/DashFieldMono"
+                android:hint="@string/dash_scripts_run_hint"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:minLines="1" />
+
+            <TextView
+                style="@style/DashLabel"
+                android:text="@string/dash_scripts_tags" />
+
+            <HorizontalScrollView
+                android:id="@+id/scripts_tag_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/scripts_tag_strip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/scripts_save"
+                    style="@style/DashButtonAccent"
+                    android:text="@string/dash_save" />
+
+                <Button
+                    android:id="@+id/scripts_clear"
+                    style="@style/DashButton"
+                    android:text="@string/dash_clear" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/scripts_empty"
+            style="@style/DashMuted"
+            android:layout_marginTop="8dp"
+            android:text="@string/dash_scripts_empty"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/scripts_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+
+</ScrollView>

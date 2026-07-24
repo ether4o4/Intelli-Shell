@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dash_bg"
+    android:fillViewport="true"
+    android:padding="12dp"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/notes_search"
+            style="@style/DashField"
+            android:layout_marginTop="0dp"
+            android:hint="@string/dash_notes_search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <TextView
+            style="@style/DashLabel"
+            android:text="@string/dash_notes_hashtags" />
+
+        <HorizontalScrollView
+            android:id="@+id/notes_tag_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/notes_tag_strip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/notes_filter_hint"
+            style="@style/DashMuted"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            style="@style/DashCard"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:id="@+id/notes_editor_title"
+                style="@style/DashTitle"
+                android:text="@string/dash_notes_editor" />
+
+            <EditText
+                android:id="@+id/notes_title"
+                style="@style/DashField"
+                android:hint="@string/dash_notes_title_hint"
+                android:inputType="textCapSentences"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/notes_body"
+                style="@style/DashField"
+                android:gravity="top|start"
+                android:hint="@string/dash_notes_body_hint"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="5" />
+
+            <TextView
+                android:id="@+id/notes_editor_tags"
+                style="@style/DashMuted"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/dash_accent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/notes_save"
+                    style="@style/DashButtonAccent"
+                    android:text="@string/dash_save" />
+
+                <Button
+                    android:id="@+id/notes_clear"
+                    style="@style/DashButton"
+                    android:text="@string/dash_clear" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/notes_empty"
+            style="@style/DashMuted"
+            android:layout_marginTop="8dp"
+            android:text="@string/dash_notes_empty"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/notes_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+
+</ScrollView>

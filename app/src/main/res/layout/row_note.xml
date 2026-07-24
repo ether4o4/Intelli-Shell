@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DashCard"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/row_note_title"
+        style="@style/DashTitle" />
+
+    <TextView
+        android:id="@+id/row_note_meta"
+        style="@style/DashMuted"
+        android:layout_marginTop="2dp" />
+
+    <TextView
+        android:id="@+id/row_note_preview"
+        style="@style/DashBody"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="5" />
+
+    <TextView
+        android:id="@+id/row_note_tags"
+        style="@style/DashMuted"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/dash_accent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/row_note_edit"
+            style="@style/DashButton"
+            android:text="@string/dash_edit" />
+
+        <Button
+            android:id="@+id/row_note_delete"
+            style="@style/DashButtonDanger"
+            android:text="@string/dash_delete" />
+
+    </LinearLayout>
+
+</LinearLayout>
