@@ -22,6 +22,7 @@
     </queries>
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:roundIcon="@drawable/ic_launcher"
@@ -43,6 +44,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Runs in its own process so it can still appear when the main process
+             is in an unrecoverable state. Uses a plain system theme on purpose. -->
+        <activity
+            android:name=".CrashActivity"
+            android:exported="false"
+            android:process=":crash"
+            android:theme="@android:style/Theme.Material.NoActionBar"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true" />
 
         <activity
             android:name=".ui.DashboardActivity"
