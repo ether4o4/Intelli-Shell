@@ -7,6 +7,16 @@ import {useSyncExternalStore} from 'react';
 import {ChatMessage} from './llm/types';
 import {LocalModel} from './models';
 import {Bridge} from './native/bridge';
+import {
+  Script,
+  Note,
+  SCRIPTS_KEY,
+  NOTES_KEY,
+  parseScripts,
+  parseNotes,
+  upsertById,
+  removeById,
+} from './dashboardStorage';
 
 export interface DownloadState {
   pct: number;
@@ -42,11 +52,21 @@ export interface Settings {
   cloudKey: string;
   localModelId: string;
   customModels: LocalModel[];
+  hfToken: string;
 }
 
 export type Status = 'idle' | 'thinking' | 'working';
 
+/** Top-level view: the Termux-style chat/shell, or the dashboard. */
+export type View = 'terminal' | 'dashboard';
+/** Dashboard tabs. */
+export type DashTab = 'scripts' | 'notes' | 'config';
+
 interface State {
+  view: View;
+  dashTab: DashTab;
+  scripts: Script[];
+  notes: Note[];
   messages: UiMessage[];
   term: TermEntry[];
   status: Status;
@@ -63,6 +83,10 @@ let counter = 0;
 const nid = () => `${++counter}-${Math.random().toString(36).slice(2, 7)}`;
 
 let state: State = {
+  view: 'terminal',
+  dashTab: 'scripts',
+  scripts: [],
+  notes: [],
   messages: [],
   term: [{id: nid(), kind: 'info', text: 'IntelliShell ready. Ask the agent to do something below.'}],
   status: 'idle',
@@ -74,6 +98,7 @@ let state: State = {
     cloudKey: '',
     localModelId: 'qwen2.5-3b-instruct-q4',
     customModels: [],
+    hfToken: '',
   },
   settingsOpen: false,
   history: [],
@@ -155,6 +180,41 @@ export const actions = {
   history(): ChatMessage[] {
     return state.history;
   },
+
+  // ---- dashboard navigation ----
+  setView(v: View) {
+    set({view: v});
+  },
+  openDashboard(tab?: DashTab) {
+    set({view: 'dashboard', ...(tab ? {dashTab: tab} : {})});
+  },
+  setDashTab(t: DashTab) {
+    set({dashTab: t});
+  },
+
+  // ---- scripts ----
+  saveScript(s: Script) {
+    const scripts = upsertById(state.scripts, s);
+    set({scripts});
+    void Bridge.setPref(SCRIPTS_KEY, JSON.stringify(scripts)).catch(() => {});
+  },
+  deleteScript(id: string) {
+    const scripts = removeById(state.scripts, id);
+    set({scripts});
+    void Bridge.setPref(SCRIPTS_KEY, JSON.stringify(scripts)).catch(() => {});
+  },
+
+  // ---- notes ----
+  saveNote(n: Note) {
+    const notes = upsertById(state.notes, n);
+    set({notes});
+    void Bridge.setPref(NOTES_KEY, JSON.stringify(notes)).catch(() => {});
+  },
+  deleteNote(id: string) {
+    const notes = removeById(state.notes, id);
+    set({notes});
+    void Bridge.setPref(NOTES_KEY, JSON.stringify(notes)).catch(() => {});
+  },
 };
 
 async function persist(s: Settings) {
@@ -165,22 +225,27 @@ async function persist(s: Settings) {
     await Bridge.setPref('cloud.key', s.cloudKey);
     await Bridge.setPref('local.modelId', s.localModelId);
     await Bridge.setPref('local.customModels', JSON.stringify(s.customModels));
+    await Bridge.setPref('hf.token', s.hfToken);
   } catch (_e) {}
 }
 
 export async function loadSettings(): Promise<void> {
   try {
-    const [provider, baseUrl, model, key, localId, customJson] = await Promise.all([
+    const [provider, baseUrl, model, key, localId, customJson, hfTok] = await Promise.all([
       Bridge.getPref('provider'),
       Bridge.getPref('cloud.baseUrl'),
       Bridge.getPref('cloud.model'),
       Bridge.getPref('cloud.key'),
       Bridge.getPref('local.modelId'),
       Bridge.getPref('local.customModels'),
+      Bridge.getPref('hf.token'),
     ]);
     const s = {...state.settings};
     if (provider === 'cloud' || provider === 'local') {
       s.provider = provider;
+    }
+    if (hfTok) {
+      s.hfToken = hfTok;
     }
     if (baseUrl) {
       s.cloudBaseUrl = baseUrl;
@@ -211,6 +276,15 @@ export async function loadSettings(): Promise<void> {
 /** Load settings + device state and wire native progress events. Call once on mount. */
 export async function bootstrap(): Promise<void> {
   await loadSettings();
+
+  // Dashboard content — saved scripts and notes.
+  try {
+    const [scriptsJson, notesJson] = await Promise.all([
+      Bridge.getPref(SCRIPTS_KEY),
+      Bridge.getPref(NOTES_KEY),
+    ]);
+    set({scripts: parseScripts(scriptsJson), notes: parseNotes(notesJson)});
+  } catch (_e) {}
 
   try {
     const [models, status] = await Promise.all([

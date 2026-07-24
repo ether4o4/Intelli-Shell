@@ -47,6 +47,33 @@ async function providerFor(): Promise<LlmProvider> {
   );
 }
 
+/**
+ * Run a saved script directly in the shell (no model), streaming the command and
+ * its output into the terminal. Switches to the terminal view so the user sees it.
+ */
+export async function runScript(body: string): Promise<void> {
+  const script = body.trim();
+  if (!script || running) {
+    return;
+  }
+  actions.setView('terminal');
+  script.split('\n').forEach(line => {
+    if (line.trim()) {
+      actions.addCmd(line);
+    }
+  });
+  actions.setStatus('working');
+  let out = '';
+  try {
+    out = await Bridge.run(script);
+  } catch (e: any) {
+    out = 'error: ' + (e && e.message ? e.message : String(e));
+  }
+  const isErr = /(^|\n)\s*(error|not found|No such file|Permission denied|command not found)/i.test(out);
+  actions.addOut(out.length ? out : '(no output)', isErr);
+  actions.setStatus('idle');
+}
+
 export async function send(text: string): Promise<void> {
   const t = text.trim();
   if (!t || running) {
@@ -54,7 +81,7 @@ export async function send(text: string): Promise<void> {
   }
   const s = getState().settings;
   if (s.provider === 'cloud' && !s.cloudKey) {
-    actions.openSettings(true);
+    actions.openDashboard('config');
     return;
   }
 
@@ -64,7 +91,7 @@ export async function send(text: string): Promise<void> {
   } catch (e: any) {
     actions.addUser(t);
     actions.addInfo('⚠ ' + (e && e.message ? e.message : String(e)));
-    actions.openSettings(true);
+    actions.openDashboard('config');
     return;
   }
 
