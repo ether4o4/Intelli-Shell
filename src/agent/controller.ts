@@ -5,7 +5,8 @@
  */
 import {getState, actions} from '../store';
 import {runAgent} from './agent';
-import {buildSystemPrompt} from './prompt';
+import {buildSystemPrompt, buildBuilderPrompt} from './prompt';
+import {prepareBuilder} from './builder';
 import {makeCloudProvider} from '../llm/openaiStream';
 import {makeLocalProvider} from '../llm/localLlama';
 import {LlmProvider} from '../llm/types';
@@ -71,9 +72,22 @@ export async function send(text: string): Promise<void> {
   running = true;
   const signal = beginRun();
   try {
+    const snap = getState();
+    const alpine = snap.sandbox.alpine;
+    let systemPrompt: string;
+    if (snap.settings.agentMode === 'builder') {
+      // Stage the scaffold generator + push credentials before the first turn.
+      await prepareBuilder(snap.settings);
+      systemPrompt = buildBuilderPrompt(alpine, {
+        user: snap.settings.githubUser,
+        hasToken: !!snap.settings.githubToken,
+      });
+    } else {
+      systemPrompt = buildSystemPrompt(alpine);
+    }
     await runAgent(
       provider,
-      buildSystemPrompt(getState().sandbox.alpine),
+      systemPrompt,
       getState().history,
       t,
       {

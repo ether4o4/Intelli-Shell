@@ -38,6 +38,45 @@ When the agent decides to run something, it emits a shell block; the app runs it
 in the sandbox, streams the command and output into the terminal, feeds the
 result back to the model, and continues — until the task is done.
 
+## Agent modes
+
+Pick a mode at the top of Settings:
+
+- **Shell agent** — the general-purpose agent described above: ask it to do
+  anything in the Linux shell.
+- **APK Builder** — a pre-configured, coding-focused preset that turns a website
+  into an Android **WebView wrapper app** and pushes it to *your* GitHub, where
+  CI builds the APK. It plans and it codes — and it declines anything that isn't
+  a build/coding task, so it stays on the rails and acts instead of lecturing.
+
+### How Builder works
+
+A phone can't run the Android SDK, so the APK is compiled on **GitHub Actions**,
+not on the device. Builder's on-device job is to scaffold the project and push
+it:
+
+1. A generator (`scripts/mkwrapper.sh`, shipped inside the app) writes a complete,
+   buildable project — a Gradle module, a Kotlin `WebView` `Activity` that loads
+   your URL, and a `.github/workflows/build-apk.yml` that compiles the APK.
+2. The agent creates a repo under your account and pushes.
+3. The workflow builds `app-debug.apk` and attaches it to a rolling `android`
+   release, so `https://github.com/<you>/<repo>/releases/latest` always serves
+   the newest build.
+
+Set your **GitHub username + a personal access token** (repo scope) in Settings →
+APK Builder. The token is stored only on the device, wired in as a `git` push
+credential, and **never sent to the model**. Builder needs the Alpine shell (for
+`git`) — set it up under On-device. Then just say:
+
+> wrap https://news.ycombinator.com as "HN Reader"
+
+and watch it scaffold, push, and hand you the releases URL. The generator is
+also usable standalone:
+
+```sh
+sh scripts/mkwrapper.sh "My App" com.example.app https://example.com ./my-app
+```
+
 ## Models: on-device or cloud
 
 - **On-device** — pick a small GGUF model (Qwen2.5 3B, Llama 3.2 3B, Gemma 2 2B,

@@ -12,9 +12,16 @@ export default function AppBar({onOpenSettings}: {onOpenSettings: () => void}) {
   const label = cloud ? settings.cloudModel : settings.localModelId;
   const busy = status !== 'idle';
 
+  const builder = settings.agentMode === 'builder';
+
   return (
     <View style={styles.bar}>
       <GoldText text="IntelliShell" size={15} />
+      {builder ? (
+        <View style={styles.modeTag}>
+          <Text style={styles.modeTagText}>BUILDER</Text>
+        </View>
+      ) : null}
       <View style={styles.spacer} />
 
       {/* Emergency stop — always tappable; goes bright when the agent is active. */}
@@ -56,6 +63,21 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: theme.textFaint,
     marginLeft: 4,
+  },
+  modeTag: {
+    marginLeft: 8,
+    borderWidth: 1,
+    borderColor: theme.purple,
+    borderRadius: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+  modeTagText: {
+    fontFamily: theme.mono,
+    fontSize: 9,
+    letterSpacing: 1.5,
+    fontWeight: '800',
+    color: theme.purple,
   },
   spacer: {flex: 1},
   stop: {

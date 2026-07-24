@@ -19,6 +19,7 @@ export default function Settings() {
   const settings = useStore(s => s.settings);
   const close = () => actions.openSettings(false);
   const cloud = settings.provider === 'cloud';
+  const builder = settings.agentMode === 'builder';
 
   return (
     <Modal visible={open} transparent animationType="slide" onRequestClose={close}>
@@ -33,6 +34,20 @@ export default function Settings() {
             </Pressable>
           </View>
 
+          <Text style={[styles.section, styles.modeLabel]}>Agent mode</Text>
+          <View style={[styles.segment, styles.modeSegment]}>
+            <Seg
+              label="Shell agent"
+              active={!builder}
+              onPress={() => actions.updateSettings({agentMode: 'shell'})}
+            />
+            <Seg
+              label="APK Builder"
+              active={builder}
+              onPress={() => actions.updateSettings({agentMode: 'builder'})}
+            />
+          </View>
+
           <View style={styles.segment}>
             <Seg label="Cloud" active={cloud} onPress={() => actions.updateSettings({provider: 'cloud'})} />
             <Seg
@@ -43,12 +58,55 @@ export default function Settings() {
           </View>
 
           <ScrollView style={styles.body} keyboardShouldPersistTaps="handled">
+            {builder ? <BuilderSettings /> : null}
             {cloud ? <CloudSettings /> : <LocalSettings />}
             <View style={{height: 24}} />
           </ScrollView>
         </View>
       </View>
     </Modal>
+  );
+}
+
+function BuilderSettings() {
+  const settings = useStore(s => s.settings);
+  return (
+    <>
+      <View style={styles.status}>
+        <Text style={styles.statusText}>
+          APK Builder turns a website into an Android WebView app and pushes it to your GitHub —
+          GitHub Actions compiles the APK and attaches it to a release. Just say “wrap
+          https://mysite.com as My App”.
+        </Text>
+      </View>
+
+      <Text style={styles.section}>GitHub</Text>
+      <Field
+        label="Username"
+        value={settings.githubUser}
+        onChangeText={t => actions.updateSettings({githubUser: t.trim()})}
+        placeholder="your-github-username"
+      />
+      <Field
+        label="Access token"
+        value={settings.githubToken}
+        onChangeText={t => actions.updateSettings({githubToken: t.trim()})}
+        placeholder="ghp_… (repo scope)"
+        secureTextEntry
+      />
+      <Field
+        label="Commit email (optional)"
+        value={settings.githubEmail}
+        onChangeText={t => actions.updateSettings({githubEmail: t.trim()})}
+        placeholder="you@users.noreply.github.com"
+      />
+      <Text style={styles.hint}>
+        Create a token at github.com → Settings → Developer settings → Personal access tokens, with
+        the <Text style={{color: theme.text}}>repo</Text> scope so the agent can create repos and
+        push. It’s stored only on this device, used as a git push credential, and never shown to the
+        model. Builder mode needs the Alpine shell (for git) — set it up under On-device.
+      </Text>
+    </>
   );
 }
 
@@ -319,6 +377,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     overflow: 'hidden',
   },
+  modeLabel: {marginHorizontal: 16, marginBottom: 6, marginTop: 4},
+  modeSegment: {marginBottom: 10},
   seg: {flex: 1, paddingVertical: 9, alignItems: 'center', backgroundColor: theme.bg},
   segOn: {backgroundColor: theme.purpleSoft},
   segText: {fontFamily: theme.mono, fontSize: 12, color: theme.textDim},

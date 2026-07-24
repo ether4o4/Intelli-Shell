@@ -35,6 +35,9 @@ export interface TermEntry {
 
 export type Provider = 'cloud' | 'local';
 
+/** Which pre-configured agent runs: the general shell agent or the APK Builder. */
+export type AgentMode = 'shell' | 'builder';
+
 export interface Settings {
   provider: Provider;
   cloudBaseUrl: string;
@@ -42,6 +45,10 @@ export interface Settings {
   cloudKey: string;
   localModelId: string;
   customModels: LocalModel[];
+  agentMode: AgentMode;
+  githubUser: string;
+  githubToken: string;
+  githubEmail: string;
 }
 
 export type Status = 'idle' | 'thinking' | 'working';
@@ -74,6 +81,10 @@ let state: State = {
     cloudKey: '',
     localModelId: 'qwen2.5-3b-instruct-q4',
     customModels: [],
+    agentMode: 'shell',
+    githubUser: '',
+    githubToken: '',
+    githubEmail: '',
   },
   settingsOpen: false,
   history: [],
@@ -165,22 +176,43 @@ async function persist(s: Settings) {
     await Bridge.setPref('cloud.key', s.cloudKey);
     await Bridge.setPref('local.modelId', s.localModelId);
     await Bridge.setPref('local.customModels', JSON.stringify(s.customModels));
+    await Bridge.setPref('agent.mode', s.agentMode);
+    await Bridge.setPref('github.user', s.githubUser);
+    await Bridge.setPref('github.token', s.githubToken);
+    await Bridge.setPref('github.email', s.githubEmail);
   } catch (_e) {}
 }
 
 export async function loadSettings(): Promise<void> {
   try {
-    const [provider, baseUrl, model, key, localId, customJson] = await Promise.all([
-      Bridge.getPref('provider'),
-      Bridge.getPref('cloud.baseUrl'),
-      Bridge.getPref('cloud.model'),
-      Bridge.getPref('cloud.key'),
-      Bridge.getPref('local.modelId'),
-      Bridge.getPref('local.customModels'),
-    ]);
+    const [provider, baseUrl, model, key, localId, customJson, mode, ghUser, ghToken, ghEmail] =
+      await Promise.all([
+        Bridge.getPref('provider'),
+        Bridge.getPref('cloud.baseUrl'),
+        Bridge.getPref('cloud.model'),
+        Bridge.getPref('cloud.key'),
+        Bridge.getPref('local.modelId'),
+        Bridge.getPref('local.customModels'),
+        Bridge.getPref('agent.mode'),
+        Bridge.getPref('github.user'),
+        Bridge.getPref('github.token'),
+        Bridge.getPref('github.email'),
+      ]);
     const s = {...state.settings};
     if (provider === 'cloud' || provider === 'local') {
       s.provider = provider;
+    }
+    if (mode === 'shell' || mode === 'builder') {
+      s.agentMode = mode;
+    }
+    if (ghUser) {
+      s.githubUser = ghUser;
+    }
+    if (ghToken) {
+      s.githubToken = ghToken;
+    }
+    if (ghEmail) {
+      s.githubEmail = ghEmail;
     }
     if (baseUrl) {
       s.cloudBaseUrl = baseUrl;
