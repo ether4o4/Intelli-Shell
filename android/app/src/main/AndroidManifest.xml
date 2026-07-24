@@ -7,10 +7,15 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- Lets us drive the user's real Termux via its RUN_COMMAND API. -->
+    <uses-permission android:name="com.termux.permission.RUN_COMMAND" />
+
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
         </intent>
+        <!-- Android 11+ package visibility so we can detect + launch Termux. -->
+        <package android:name="com.termux" />
     </queries>
 
     <application

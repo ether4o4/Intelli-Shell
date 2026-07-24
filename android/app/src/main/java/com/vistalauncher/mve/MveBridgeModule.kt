@@ -31,6 +31,7 @@ class MveBridgeModule(private val reactContext: ReactApplicationContext) :
   private val io = Executors.newFixedThreadPool(2)
   private val prefs = reactContext.getSharedPreferences("mve_engine", Context.MODE_PRIVATE)
   private val sandbox = SandboxManager(reactContext)
+  private val termux = TermuxBridge(reactContext)
 
   override fun getName(): String = "MveBridge"
 
@@ -51,10 +52,21 @@ class MveBridgeModule(private val reactContext: ReactApplicationContext) :
   @ReactMethod
   fun run(command: String, promise: Promise) = io.execute {
     try {
-      promise.resolve(sandbox.exec(command))
+      // Commands now run in the user's real Termux, not the homemade sandbox.
+      promise.resolve(termux.exec(command))
     } catch (e: Exception) {
       promise.resolve("error: ${e.message}")
     }
+  }
+
+  /** Whether the real Termux app is installed, so the UI can guide setup. */
+  @ReactMethod
+  fun termuxStatus(promise: Promise) = io.execute {
+    promise.resolve(
+        Arguments.createMap().apply {
+          putBoolean("installed", termux.isInstalled())
+        },
+    )
   }
 
   @ReactMethod

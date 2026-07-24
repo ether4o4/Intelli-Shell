@@ -59,6 +59,10 @@ export const Bridge = {
           statusText: 'no bridge',
         });
   },
+  /** Whether the real Termux app (F-Droid) is installed — it runs our commands. */
+  termuxStatus(): Promise<{installed: boolean}> {
+    return M && M.termuxStatus ? M.termuxStatus() : Promise.resolve({installed: false});
+  },
 
   modelPath(id: string): Promise<string> {
     return M && M.modelPath ? M.modelPath(id) : Promise.resolve('');
