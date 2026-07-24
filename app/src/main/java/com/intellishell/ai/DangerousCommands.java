@@ -18,7 +18,7 @@ public final class DangerousCommands {
         // Recursive/forced deletes.
         Pattern.compile("\\brm\\s+(-[a-z]*\\s+)*-[a-z]*[rf][a-z]*\\b"),
         // Wiping the filesystem root or a whole home/prefix.
-        Pattern.compile("\\brm\\b[^|;&]*\\s(/|/\\*|~|\\$HOME|\\$PREFIX)(\\s|/\\*|$)"),
+        Pattern.compile("\\brm\\b[^|;&]*\\s(/|/\\*|~|\\$home|\\$prefix)(\\s|/\\*|$)"),
         // Raw device writes and filesystem creation.
         Pattern.compile("\\bdd\\b[^|;&]*\\bof=/dev/"),
         Pattern.compile("\\bmkfs(\\.[a-z0-9]+)?\\b"),
@@ -29,8 +29,8 @@ public final class DangerousCommands {
         Pattern.compile("\\b(pkg|apt|apt-get)\\s+(remove|purge|autoremove)\\b"),
         Pattern.compile("\\btermux-reset\\b"),
         // Recursive ownership/permission changes from the root.
-        Pattern.compile("\\bchmod\\s+(-[a-zA-Z]*\\s+)*-[a-zA-Z]*R[a-zA-Z]*\\b[^|;&]*\\s/(\\s|$)"),
-        Pattern.compile("\\bchown\\s+(-[a-zA-Z]*\\s+)*-[a-zA-Z]*R[a-zA-Z]*\\b[^|;&]*\\s/(\\s|$)"),
+        Pattern.compile("\\bchmod\\s+(-[a-z]*\\s+)*-[a-z]*r[a-z]*\\b[^|;&]*\\s/(\\s|$)"),
+        Pattern.compile("\\bchown\\s+(-[a-z]*\\s+)*-[a-z]*r[a-z]*\\b[^|;&]*\\s/(\\s|$)"),
         // Fork bomb.
         Pattern.compile(":\\(\\)\\s*\\{.*\\|.*&.*\\}\\s*;?\\s*:"),
         // Overwriting a block device or clearing history/keys wholesale.
