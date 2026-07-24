@@ -15,22 +15,22 @@ import com.termux.view.TerminalViewClient;
  * extra-keys row, no session list, no clipboard plumbing — so most callbacks use
  * plain defaults and the hardware keyboard modifiers report "not held".
  */
-final class TermClients {
+public final class TermClients {
 
     private static final String TAG = "IntelliShell.Term";
 
     private TermClients() {}
 
     /** Session-side callbacks: title/finish/logging. */
-    static final class SessionClient implements TerminalSessionClient {
-        interface Events {
+    public static final class SessionClient implements TerminalSessionClient {
+        public interface Events {
             void onScreenUpdated();
             void onSessionEnded();
         }
 
         private final Events mEvents;
 
-        SessionClient(Events events) {
+        public SessionClient(Events events) {
             mEvents = events;
         }
 
@@ -55,19 +55,23 @@ final class TermClients {
     }
 
     /** View-side callbacks: input handling and hardware-modifier reads. */
-    static final class ViewClient implements TerminalViewClient {
+    public static final class ViewClient implements TerminalViewClient {
         private final TerminalView mView;
+        private float mTextSizePx;
 
-        ViewClient(TerminalView view) {
+        public ViewClient(TerminalView view) {
             mView = view;
+            // MainActivity initializes the terminal around 13dp. TerminalView exposes
+            // setTextSize() but no getter, so keep our own value for pinch scaling.
+            mTextSizePx = 13f * view.getResources().getDisplayMetrics().density;
         }
 
         @Override public float onScale(float scale) {
             // Pinch-to-zoom the font size, clamped to a readable range.
             if (scale < 0.9f || scale > 1.1f) {
-                float newSize = mView.getTextSize() * scale;
-                int clamped = (int) Math.max(18f, Math.min(72f, newSize));
-                mView.setTextSize(clamped);
+                mTextSizePx *= scale;
+                mTextSizePx = Math.max(18f, Math.min(72f, mTextSizePx));
+                mView.setTextSize((int) mTextSizePx);
                 return 1.0f;
             }
             return scale;
