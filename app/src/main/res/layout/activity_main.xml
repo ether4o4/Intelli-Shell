@@ -88,12 +88,14 @@
         android:layout_height="10dp"
         android:background="@color/border" />
 
-    <!-- TERMINAL pane (bottom) -->
-    <FrameLayout
+    <!-- TERMINAL pane (bottom). Must stay a LinearLayout: MainActivity holds it as
+         one and adds the TerminalView with LinearLayout.LayoutParams. -->
+    <LinearLayout
         android:id="@+id/terminalContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="46"
+        android:orientation="vertical"
         android:background="@color/black" />
 
     <!-- Composer -->
