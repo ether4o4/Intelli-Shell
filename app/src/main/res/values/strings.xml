@@ -1,12 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">IntelliShell</string>
+    <string name="app_name">NeverSoft Shell</string>
     <string name="dashboard">Dashboard</string>
     <string name="stop">STOP</string>
     <string name="send">Send</string>
-    <string name="chat_hint">Ask IntelliShell, or pull in a script…</string>
+    <string name="chat_hint">Ask NeverSoft Shell, or pull in a script…</string>
     <string name="scripts">Scripts</string>
     <string name="notes">Notes</string>
     <string name="memory">Memory</string>
     <string name="ai_config">AI Config</string>
+
+    <!-- ===== First-run setup ============================================ -->
+
+    <string name="setup_title">Getting NeverSoft Shell ready</string>
+    <string name="setup_intro">NeverSoft Shell includes a complete Linux system. Setting it up takes about a minute and only happens once.</string>
+    <string name="setup_note">Keep this screen open while it finishes. You will not need to do this again.</string>
+    <string name="setup_phase_starting">Starting…</string>
+    <!-- phase name · percent complete -->
+    <string name="setup_phase_percent">%1$s · %2$d%%</string>
+    <string name="setup_phase_done">Ready.</string>
+    <string name="setup_failed_phase">Setup stopped</string>
+    <string name="setup_failed_title">Setup couldn\'t finish</string>
+    <string name="setup_failed_help">Nothing was damaged — you can try again. If it keeps failing, copy the details and send them to us.</string>
+    <string name="setup_retry">Try again</string>
+    <string name="setup_copy">Copy details</string>
+    <string name="setup_copied">Details copied. Paste them anywhere to send them to us.</string>
+    <string name="setup_copy_label">NeverSoft Shell setup details</string>
+    <string name="setup_back_blocked">Setup is still running — it only takes a moment.</string>
+
+    <!-- ===== Welcome ==================================================== -->
+
+    <string name="welcome_title">You\'re all set</string>
+    <string name="welcome_subtitle">Three things worth knowing before you start.</string>
+    <string name="welcome_card1_title">Chat with the AI</string>
+    <string name="welcome_card1_body">It runs commands in the terminal below, and you can watch and take over any time.</string>
+    <string name="welcome_card2_title">Everything else lives under ▦</string>
+    <string name="welcome_card2_body">Tap ▦ for models, scripts, notes and memory.</string>
+    <string name="welcome_card3_title">Give it a brain</string>
+    <string name="welcome_card3_body">Add a cloud API key or download a local model to get started.</string>
+    <string name="welcome_open_config">Set up the AI</string>
+    <string name="welcome_dismiss">Look around first</string>
+
+    <!-- ===== Quick-start suggestions ==================================== -->
+
+    <string name="quick_python_label">Install Python</string>
+    <string name="quick_python_prompt">Install Python and pip, then show me the version.</string>
+    <string name="quick_ssh_label">Set up SSH keys</string>
+    <string name="quick_ssh_prompt">Set up an SSH key for me and show me the public key so I can copy it.</string>
+    <string name="quick_update_label">Update all packages</string>
+    <string name="quick_update_prompt">Update all installed packages and tell me what changed.</string>
+    <string name="quick_storage_label">Show me my storage</string>
+    <string name="quick_storage_prompt">Show me how much storage is free and what is taking up the most space.</string>
+    <string name="quick_backup_label">Write a backup script</string>
+    <string name="quick_backup_prompt">Write a script that backs up my home folder to a dated archive, and explain how to run it.</string>
+
+    <!-- ===== Chat screen copy =========================================== -->
+
+    <string name="chat_greeting">Hi — I\'m your shell assistant. Tell me what you want to do and I\'ll do it in the terminal below, where you can watch every command and take over whenever you like. Tap ▦ for models, scripts, notes and memory.</string>
+    <string name="chat_need_model">You haven\'t picked an AI yet. Add a cloud API key or download a local model, and I\'ll be ready to go.</string>
+    <string name="chat_no_scripts">No saved scripts yet — you can write one under ▦ → Scripts.</string>
+    <string name="chat_shell_not_ready">The terminal isn\'t ready yet — give it a second and try again.</string>
+    <string name="chat_confirm_title">Let the AI run this?</string>
+    <string name="chat_confirm_run">Run it</string>
+    <string name="chat_confirm_skip">Don\'t run it</string>
+    <string name="chat_script_done">Done.</string>
+
 </resources>

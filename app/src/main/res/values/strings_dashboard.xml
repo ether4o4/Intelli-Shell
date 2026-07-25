@@ -75,7 +75,7 @@
     <!-- AI Config: provider -->
     <string name="dash_config_provider">AI provider</string>
     <string name="dash_config_provider_cloud">Cloud API</string>
-    <string name="dash_config_provider_local">Local model, served from Termux</string>
+    <string name="dash_config_provider_local">Local model, running on this device</string>
     <string name="dash_config_cloud">Cloud API</string>
     <string name="dash_config_base_url_hint">Base URL (e.g. https://api.openai.com/v1)</string>
     <string name="dash_config_model_hint">Model name (e.g. gpt-4o-mini)</string>
@@ -103,20 +103,20 @@
     <string name="dash_config_external_note">Skips the buttons above and talks to this URL instead — an llama.cpp, Ollama or LM Studio server anywhere you can reach.</string>
     <string name="dash_config_server_url_hint">Server URL (e.g. http://127.0.0.1:8080)</string>
 
-    <!-- AI Config: Termux -->
-    <string name="dash_config_termux">Termux backend</string>
-    <string name="dash_config_termux_missing">Termux is not installed. Everything local needs it.</string>
-    <string name="dash_config_termux_ok">Termux is installed.</string>
-    <string name="dash_config_termux_perm_ok">RUN_COMMAND permission granted.</string>
-    <string name="dash_config_termux_perm_missing">RUN_COMMAND permission is missing. Install Termux first, then reinstall IntelliShell, and set allow-external-apps=true in ~/.termux/termux.properties.</string>
-    <string name="dash_config_termux_install">Install Termux</string>
-    <string name="dash_config_termux_open">Open Termux</string>
+    <!-- AI Config: the bundled Linux system -->
+    <string name="dash_config_termux">Linux system</string>
+    <string name="dash_config_termux_missing">The Linux system isn’t set up yet. Reopen the app to finish setting it up.</string>
+    <string name="dash_config_termux_ok">The Linux system is installed and ready.</string>
+    <string name="dash_config_termux_perm_ok">Everything runs inside NeverSoft Shell — no other apps needed.</string>
+    <string name="dash_config_termux_perm_missing">The Linux system looks incomplete. Reopen the app to finish setting it up.</string>
+    <string name="dash_config_termux_install">Finish setup</string>
+    <string name="dash_config_termux_open">Open the terminal</string>
 
     <!-- AI Config: feedback -->
     <string name="dash_config_saved">Settings saved</string>
-    <string name="dash_config_sent">Sent to Termux — watch the Termux notification for progress.</string>
-    <string name="dash_config_refused">Termux refused the command. Check that allow-external-apps=true is set in ~/.termux/termux.properties.</string>
-    <string name="dash_config_need_termux">Install Termux first.</string>
+    <string name="dash_config_sent">Started it in the terminal — watch the bottom pane on the chat screen for progress.</string>
+    <string name="dash_config_refused">The terminal isn’t ready yet. Go back to the chat screen, wait for the prompt, then try again.</string>
+    <string name="dash_config_need_termux">The Linux system isn’t ready yet — reopen the app to finish setting it up.</string>
     <string name="dash_config_need_model">Pick a model first.</string>
     <string name="dash_config_downloading">Downloading %1$s in the background.</string>
     <string name="dash_config_no_store">No app on this device can open the download page.</string>

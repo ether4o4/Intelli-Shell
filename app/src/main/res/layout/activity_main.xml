@@ -98,6 +98,26 @@
         android:orientation="vertical"
         android:background="@color/black" />
 
+    <!-- Quick-start suggestions. Sits directly above the composer so a tapped chip
+         lands in the field right under it. QuickStart.hide() removes the row for
+         good once the user has sent their first message. -->
+    <HorizontalScrollView
+        android:id="@+id/quickStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        android:scrollbars="none"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/quickStartRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
     <!-- Composer -->
     <LinearLayout
         android:layout_width="match_parent"
