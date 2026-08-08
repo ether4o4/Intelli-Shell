@@ -1,5 +1,14 @@
 # Termux application
 
+## Download
+
+[![Latest APK](https://img.shields.io/github/v/release/ether4o4/Intelli-Shell?label=Download%20APK&logo=android&color=3DDC84)](https://github.com/ether4o4/Intelli-Shell/releases/latest/download/intellishell.apk)
+
+**[⬇ Download the latest IntelliShell APK](https://github.com/ether4o4/Intelli-Shell/releases/latest/download/intellishell.apk)**
+
+That link always resolves to the newest release, so it never needs updating. On the device, enable
+*Install unknown apps* for your browser, then open the downloaded file.
+
 [![Build status](https://github.com/termux/termux-app/workflows/Build/badge.svg)](https://github.com/termux/termux-app/actions)
 [![Testing status](https://github.com/termux/termux-app/workflows/Unit%20tests/badge.svg)](https://github.com/termux/termux-app/actions)
 [![Join the chat at https://gitter.im/termux/termux](https://badges.gitter.im/termux/termux.svg)](https://gitter.im/termux/termux)
