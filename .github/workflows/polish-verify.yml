@@ -19,10 +19,13 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Compile and test without generating signing credentials
+      - name: Generate ephemeral test APK debug key
+        run: |
+          keytool -genkeypair -noprompt -keystore app/debug.keystore -storepass android -keypass android -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+      - name: Build test APK, compile, test and lint
         run: |
           chmod +x gradlew
-          ./gradlew :app:compileDebugJavaWithJavac :app:testDebugUnitTest :app:lintDebug --no-daemon --max-workers=2
+          ./gradlew :app:assembleDebug :app:testDebugUnitTest :app:lintDebug --no-daemon --max-workers=2
       - name: Upload build and validation artifacts
         if: always()
         uses: actions/upload-artifact@v4
