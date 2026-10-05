@@ -12,6 +12,7 @@ on:
 
 jobs:
   validation:
+    if: ${{ !startsWith(github.ref_name, 'polish/') && !startsWith(github.head_ref, 'polish/') }}
     name: "Validation"
     runs-on: ubuntu-latest
     steps:

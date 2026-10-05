@@ -63,14 +63,20 @@ public final class TermClients {
             mView = view;
             // MainActivity initializes the terminal around 13dp. TerminalView exposes
             // setTextSize() but no getter, so keep our own value for pinch scaling.
-            mTextSizePx = 13f * view.getResources().getDisplayMetrics().density;
+            float density = view.getResources().getDisplayMetrics().scaledDensity;
+            float saved = view.getContext().getSharedPreferences("terminal_ui", 0).getFloat("font_sp", 13f);
+            mTextSizePx = Math.max(10f, Math.min(32f, saved)) * density;
+            view.setTextSize(Math.round(mTextSizePx));
         }
 
         @Override public float onScale(float scale) {
             // Pinch-to-zoom the font size, clamped to a readable range.
             if (scale < 0.9f || scale > 1.1f) {
                 mTextSizePx *= scale;
-                mTextSizePx = Math.max(18f, Math.min(72f, mTextSizePx));
+                float density = mView.getResources().getDisplayMetrics().scaledDensity;
+                mTextSizePx = Math.max(10f * density, Math.min(32f * density, mTextSizePx));
+                mView.getContext().getSharedPreferences("terminal_ui", 0).edit()
+                    .putFloat("font_sp", mTextSizePx / density).apply();
                 mView.setTextSize((int) mTextSizePx);
                 return 1.0f;
             }
