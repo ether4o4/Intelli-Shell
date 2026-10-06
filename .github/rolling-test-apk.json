@@ -1,0 +1,9 @@
+{
+  "seed_run": 37361761961,
+  "seed_sha": "ad1313c65fe5065b39d29458c82f1e5a9d322ae9",
+  "seed_apk_sha": "6b829ae648268105c8b88bf8d2fde9e378ef23f719eff0e5fc1944daf3f244e9",
+  "main_path": ".github/workflows/publish-apk.yml",
+  "main_artifact": "intellishell-apk",
+  "selector": "\\.apk$",
+  "asset_prefix": "Intelli-Shell-test"
+}
